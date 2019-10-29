@@ -18,9 +18,12 @@ From `comply help`:
 <!-- BEGIN USAGE -->
 ```
 Commands:
-  comply help [COMMAND]  # Describe available commands or one specific command
-  comply login           # Log in to Aptible
-  comply version         # Print Aptible CLI version
+  comply help [COMMAND]                      # Describe available commands or one specific command
+  comply integrations:enable INTEGRATION_ID  # Enable an integration
+  comply integrations:list                   # List integrations
+  comply integrations:sync INTEGRATION_ID    # Sync an integration
+  comply login                               # Log in to Aptible
+  comply version                             # Print Aptible CLI version
 ```
 <!-- END USAGE -->
 

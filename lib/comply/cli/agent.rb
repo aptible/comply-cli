@@ -2,7 +2,8 @@ require 'aptible/auth'
 require 'thor'
 require 'chronic_duration'
 
-require_relative 'helpers/token'
+Dir[File.join(__dir__, 'helpers', '*.rb')].each { |file| require file }
+Dir[File.join(__dir__, 'subcommands', '*.rb')].each { |file| require file }
 
 module Comply
   module CLI
@@ -10,6 +11,8 @@ module Comply
       include Thor::Actions
 
       include Helpers::Token
+
+      include Subcommands::Integrations
 
       # Forward return codes on failures.
       def self.exit_on_failure?
