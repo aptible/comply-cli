@@ -1,6 +1,7 @@
 require 'aptible/auth'
 require 'thor'
 require 'chronic_duration'
+require 'highline/import'
 
 Dir[File.join(__dir__, 'helpers', '*.rb')].each { |file| require file }
 Dir[File.join(__dir__, 'subcommands', '*.rb')].each { |file| require file }
@@ -11,6 +12,7 @@ module Comply
       include Thor::Actions
 
       include Helpers::Token
+      include Helpers::Program
 
       include Subcommands::Integrations
 
@@ -76,6 +78,34 @@ module Comply
         expires_in = ChronicDuration.output(token_lifetime, lifetime_format)
         puts "This token will expire after #{expires_in} " \
              '(use --lifetime to customize)'
+
+        # Select a default program
+        set_default_program
+      end
+
+      desc 'programs:select', 'Select a program for CLI context'
+      define_method 'programs:select' do
+        candidates = own_programs
+        current_program_id = begin
+                               fetch_program_id
+                             rescue Thor::Error
+                               nil
+                             end
+
+        choose do |menu|
+          menu.prompt = 'Choose a program (* is current default):'
+          candidates.each do |program|
+            pretty = pretty_print_program(program)
+            if program.id == current_program_id
+              pretty = "* #{pretty}"
+              menu.default = pretty
+            end
+
+            menu.choice pretty do
+              save_program_id program.id
+            end
+          end
+        end
       end
 
       private

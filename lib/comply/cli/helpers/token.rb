@@ -11,7 +11,7 @@ module Comply
           @token ||= ENV[TOKEN_ENV_VAR] ||
                      current_token_hash[Aptible::Auth.configuration.root_url]
           return @token if @token
-          raise Thor::Error, 'Could not read token: please run aptible login ' \
+          raise Thor::Error, 'Could not read token: please run comply login ' \
                              "or set #{TOKEN_ENV_VAR}"
         end
 
