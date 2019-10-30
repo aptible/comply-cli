@@ -23,6 +23,7 @@ Commands:
   comply integrations:list                   # List integrations
   comply integrations:sync INTEGRATION_ID    # Sync an integration
   comply login                               # Log in to Aptible
+  comply programs:select                     # Select a program for CLI context
   comply version                             # Print Aptible CLI version
 ```
 <!-- END USAGE -->

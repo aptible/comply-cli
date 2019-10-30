@@ -15,9 +15,6 @@ rescue HyperResource::ClientError => e
       else
         "An error occurred: #{e.body['message']}"
       end
-  Comply::CLI.logger.error(m)
-  exit 1
-rescue Comply::CLI::UserError => e
-  Comply::CLI.logger.error e.message
+  puts m
   exit 1
 end

@@ -7,7 +7,7 @@ describe Comply::CLI::Agent do
     allow(subject).to receive(:token_file).and_return 'some.json'
   end
 
-  describe '#version' do
+  describe 'version' do
     it 'should print the version' do
       version = Comply::CLI::VERSION
 
@@ -17,7 +17,7 @@ describe Comply::CLI::Agent do
     end
   end
 
-  describe '#login' do
+  describe 'login' do
     let(:token) { double('Aptible::Auth::Token') }
     let(:created_at) { Time.now }
     let(:expires_at) { created_at + 1.week }
@@ -30,6 +30,8 @@ describe Comply::CLI::Agent do
       allow(token).to receive(:created_at).and_return created_at
       allow(token).to receive(:expires_at).and_return expires_at
       allow(subject).to receive(:puts) {}
+
+      allow(subject).to receive(:set_default_program) {}
     end
 
     it 'should save a token to ~/.aptible/tokens' do
@@ -78,6 +80,12 @@ describe Comply::CLI::Agent do
       allow(subject).to receive(:options).and_return options
 
       expect { subject.login }.to raise_error(/Invalid token lifetime/)
+    end
+
+    it 'should set a default program' do
+      allow(Aptible::Auth::Token).to receive(:create).and_return token
+      expect(subject).to receive(:set_default_program)
+      subject.login
     end
 
     context 'with OTP' do
@@ -158,6 +166,30 @@ describe Comply::CLI::Agent do
 
           expect { subject.login }.to raise_error(/Could not authenticate/)
         end
+      end
+    end
+  end
+
+  describe 'programs:select' do
+    # TODO: Try to get this working
+    # https://github.com/JEG2/highline/issues/176 might be helpful
+
+    let(:p1) { Fabricate(:program) }
+    let(:p2) { Fabricate(:program) }
+
+    before do
+      allow(subject).to receive(:own_programs) { [p1, p2] }
+      allow(subject).to receive(:fetch_program_id) { p1.id }
+      allow_any_instance_of(HighLine).to receive(:get_line) { '1' }
+    end
+
+    skip 'displays a selection of available programs' do
+      lines = ["* #{subject.pretty_print_program(p1)}",
+               subject.pretty_print_program(p2),
+               'Choose a program']
+
+      lines.each do |line|
+        expect { subject.send('programs:select') }.to output(line).to_stdout
       end
     end
   end
