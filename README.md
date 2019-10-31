@@ -18,11 +18,24 @@ From `comply help`:
 <!-- BEGIN USAGE -->
 ```
 Commands:
+  comply access:authorize ASSET_ID           # Provision a new user
+  comply access:deauthorize ASSET_ID         # Deprovision a user
+  comply access:grant ASSET_ID PERSON_ID     # Deprovision a user
+  comply access:list                         # List people in the current program
+  comply access:ungrant ASSET_ID PERSON_ID   # Deprovision a user
+  comply groups:add GROUP_ID PERSON_ID       # Add a user to a group
+  comply groups:create                       # Create a new group
+  comply groups:list                         # List groups in the current program
+  comply groups:membership GROUP_ID          # List members of a group
+  comply groups:remove GROUP_ID PERSON_ID    # Remove a user from a group
   comply help [COMMAND]                      # Describe available commands or one specific command
   comply integrations:enable INTEGRATION_ID  # Enable an integration
   comply integrations:list                   # List integrations
   comply integrations:sync INTEGRATION_ID    # Sync an integration
   comply login                               # Log in to Aptible
+  comply person:deprovision PERSON_ID        # Deprovision a user
+  comply person:list                         # List people in the current program
+  comply person:provision                    # Provision a new user
   comply programs:select                     # Select a program for CLI context
   comply vendors:deregister VENDOR_ID        # Deregister a vendor
   comply vendors:list                        # List registered vendors

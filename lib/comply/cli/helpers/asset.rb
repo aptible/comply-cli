@@ -18,6 +18,8 @@ module Comply
               token: fetch_token
             )
             "#{pretty_print_vendor(vendor)} (#{asset.id})"
+          else
+            "#{asset.name} (#{asset.id})"
           end
         end
 
