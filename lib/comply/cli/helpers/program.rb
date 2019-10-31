@@ -11,6 +11,13 @@ module Comply
 
         PROGRAM_ENV_VAR = 'APTIBLE_PROGRAM_ID'.freeze
 
+        def default_program
+          return nil unless (id = fetch_program_id)
+          @default_program ||= Aptible::Comply::Program.find(
+            id, token: fetch_token
+          )
+        end
+
         def set_default_program
           default_program = own_programs.first
           save_program_id(default_program.id) if default_program

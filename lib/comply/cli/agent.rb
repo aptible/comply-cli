@@ -14,6 +14,7 @@ module Comply
       include Helpers::Token
       include Helpers::Program
 
+      include Subcommands::Vendors
       include Subcommands::Integrations
 
       # Forward return codes on failures.
