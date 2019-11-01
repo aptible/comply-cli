@@ -24,6 +24,9 @@ Commands:
   comply integrations:sync INTEGRATION_ID    # Sync an integration
   comply login                               # Log in to Aptible
   comply programs:select                     # Select a program for CLI context
+  comply vendors:deregister VENDOR_ID        # Deregister a vendor
+  comply vendors:list                        # List registered vendors
+  comply vendors:register                    # Register a new vendor
   comply version                             # Print Aptible CLI version
 ```
 <!-- END USAGE -->
