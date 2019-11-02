@@ -178,7 +178,7 @@ describe Comply::CLI::Agent do
     let(:p2) { Fabricate(:program) }
 
     before do
-      allow(subject).to receive(:own_programs) { [p1, p2] }
+      allow(subject).to receive(:accessible_programs) { [p1, p2] }
       allow(subject).to receive(:fetch_program_id) { p1.id }
       allow_any_instance_of(HighLine).to receive(:get_line) { '1' }
     end

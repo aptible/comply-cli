@@ -6,14 +6,17 @@ module Comply
           thor.class_eval do
             desc 'integrations:list', 'List integrations'
             define_method 'integrations:list' do
+              raise NotImplementedError
             end
 
             desc 'integrations:enable INTEGRATION_ID', 'Enable an integration'
-            define_method 'integrations:enable' do |integration_id|
+            define_method 'integrations:enable' do |_integration_id|
+              raise NotImplementedError
             end
 
             desc 'integrations:sync INTEGRATION_ID', 'Sync an integration'
-            define_method 'integrations:sync' do |integration_id|
+            define_method 'integrations:sync' do |_integration_id|
+              raise NotImplementedError
             end
           end
         end

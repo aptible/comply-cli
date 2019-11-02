@@ -7,6 +7,11 @@ module Comply
       module Token
         TOKEN_ENV_VAR = 'APTIBLE_ACCESS_TOKEN'.freeze
 
+        def current_user_email
+          @current_user_email ||=
+            Aptible::Auth::Agent.new(token: fetch_token).me.email
+        end
+
         def fetch_token
           @token ||= ENV[TOKEN_ENV_VAR] ||
                      current_token_hash[Aptible::Auth.configuration.root_url]

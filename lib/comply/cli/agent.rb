@@ -13,7 +13,6 @@ module Comply
 
       include Helpers::Token
       include Helpers::Program
-      include Helpers::Person
 
       include Subcommands::Vendors
       include Subcommands::Integrations
@@ -91,7 +90,7 @@ module Comply
 
       desc 'programs:select', 'Select a program for CLI context'
       define_method 'programs:select' do
-        candidates = own_programs
+        candidates = accessible_programs
         current_program_id = begin
                                fetch_program_id
                              rescue Thor::Error

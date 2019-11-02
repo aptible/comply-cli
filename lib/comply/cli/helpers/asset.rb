@@ -1,15 +1,9 @@
 require 'aptible/comply'
 
-require_relative 'token'
-require_relative 'program'
-
 module Comply
   module CLI
     module Helpers
       module Asset
-        include Helpers::Token
-        include Helpers::Program
-
         def pretty_print_asset(asset)
           case asset.asset_type
           when 'VENDOR' then
@@ -37,7 +31,8 @@ module Comply
           default_program.create_asset(
             asset_type: 'VENDOR',
             name: vendor.name,
-            vendor_id: vendor.id
+            vendor_id: vendor.id,
+            owner: current_user_email
           )
         end
 

@@ -22,7 +22,7 @@ describe Comply::CLI::Helpers::Program do
     end
   end
 
-  describe 'own_programs' do
+  describe 'accessible_programs' do
     it 'filters programs' do
       o1 = Fabricate(:organization)
       o2 = Fabricate(:organization)
@@ -34,7 +34,8 @@ describe Comply::CLI::Helpers::Program do
       allow(Aptible::Comply::Program).to receive(:all) { [p1, p2, p3] }
       allow(Aptible::Auth::Organization).to receive(:all) { [o1, o2] }
 
-      expect(subject.own_programs.map(&:id).sort).to eq [p1.id, p2.id].sort
+      programs = subject.accessible_programs
+      expect(programs.map(&:id).sort).to eq [p1.id, p2.id].sort
     end
   end
 end
