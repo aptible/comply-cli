@@ -1,25 +1,26 @@
 require 'aptible/comply'
 require 'json'
 
-require_relative 'token'
-
 module Comply
   module CLI
     module Helpers
       module Group
-        include Helpers::Token
-
-        def fetch_group(program, group_id)
-          maybe_group = program.groups.select { |g| g.id == group_id }
-          maybe_group.count > 0 ? maybe_group.first : nil
+        def prettify_group(group)
+          "group:#{group.name}"
         end
 
         def pretty_print_group(group)
-          group.inspect
+          "#{prettify_group(group)} (#{group.id})"
         end
 
-        def pretty_print_member(member)
-          member.name
+        def find_group_by_alias(id_or_pretty)
+          if id_or_pretty.uuid?
+            Aptible::Comply::Group.find(id_or_pretty, token: fetch_token)
+          else
+            default_program.groups.find do |group|
+              prettify_group(group) == id_or_pretty
+            end
+          end
         end
       end
     end

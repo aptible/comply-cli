@@ -15,87 +15,63 @@ module Comply
 
         def pretty_print_workflows
           AVAILABLE_WORKFLOWS.each do |workflow|
-            pretty_print_workflow(workflow)
+            say workflow
           end
         end
 
-        def pretty_print_workflow(workflow)
-          say "workflow:#{workflow}"
-        end
-
-        def run(workflow_id)
+        def run_workflow(workflow_id, asset)
           case workflow_id
           when AUTH_REVIEW
-            auth_review(options[:asset])
+            auth_review(asset)
           when GRANT_REVIEW
-            grant_review(options[:asset])
+            grant_review(asset)
           else
             raise Thor::Error, 'Workflow not found. ' \
-            'Please run comply workflows:list for a list of options.'
+              'Please run comply workflows:list for a list of options.'
           end
         end
 
-        def grant_review(asset_ids)
-          assets = fetch_assets(asset_ids)
-
-          assets.each do |asset|
-            # TODO: Make this into find or create logic
-            # in case the review was launched previously
-            asset.create_asset_review!(
-              asset_id: asset.id,
-              review_type: GRANT_REVIEW
-            )
-            # TODO: Print authorizations
-            # TODO: Print grants based on querying grants
-          end
-
-          say 'Review access to ensure every group or individual ' \
-          'who should have access, and no others, have authorized access.'
-
-          complete_review(asset_reviews)
-        end
-
-        def auth_review(asset_ids)
-          assets = fetch_assets(asset_ids)
-
-          asset_reviews = assets.map do |asset|
-            # TODO: Make this into find or create logic
-            # in case the review was launched previously
-            asset.create_asset_review!(
-              asset_id: asset.id,
-              review_type: AUTH_REVIEW
-            )
-            # TODO: Print authorizations
-          end
+        def auth_review(asset)
+          review = find_or_create_review(asset,
+                                         AUTH_REVIEW,
+                                         current_user_email)
+          say pretty_print_grants(asset.grants)
 
           say 'Review access to ensure every group or individual who should ' \
-          'have access, and no others, have authorized access.'
+              'have access, and no others, have authorizations.'
 
-          complete_review(asset_reviews)
+          complete_review(review)
         end
 
-        def complete_review(asset_reviews)
-          completed = ask('Complete workflow (Y/N):', limited_to: %w(Y y N n))
+        def grant_review(asset)
+          review = find_or_create_review(asset,
+                                         GRANT_REVIEW,
+                                         current_user_email)
+          say pretty_print_grants(asset.grants)
 
-          return unless %w(Y y).include?(completed)
+          say 'Review access to ensure every group or individual who should ' \
+              'have access, and no others, have access grants.'
+
+          complete_review(review)
+        end
+
+        def complete_review(review)
+          answer = ask('Complete workflow (Y/N):', limited_to: %w(Y y N n))
+          return unless %w(Y y).include?(answer)
 
           notes = ask('Notes:')
-
-          now = Time.now
-          asset_reviews.each do |asset_review|
-            asset_review.update_asset_review!(completed_at: now, notes: notes)
-          end
+          review.update(completed_at: Time.now, notes: notes)
         end
 
-        def fetch_assets(asset_ids)
-          assets = assets_by_type('VENDOR')
-          if asset_ids.any?
-            assets.select do |asset|
-              asset_ids.include?(asset.id)
-            end
-          else
-            assets
+        def find_or_create_review(asset, workflow_id, reviewer_id)
+          review = asset.asset_reviews.find do |r|
+            r.review_type == workflow_id && r.completed_at.nil?
           end
+
+          return review if review
+
+          asset.create_asset_review(review_type: workflow_id,
+                                    reviewer_id: reviewer_id)
         end
       end
     end

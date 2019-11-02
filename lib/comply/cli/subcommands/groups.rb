@@ -4,7 +4,7 @@ module Comply
       module Groups
         def self.included(thor)
           thor.class_eval do
-            include Helpers::Program
+            include Helpers::Group
 
             desc 'groups:list', 'List groups'
             define_method 'groups:list' do
@@ -14,51 +14,63 @@ module Comply
               end
             end
 
-            desc 'groups:membership GROUP_ID', 'List the membors of a group'
-            define_method 'groups:membership' do |group_id|
-              group = fetch_group(default_program, group_id)
-              return unless group
-              group.first.members.each do |member|
-                say(pretty_print_member(member))
+            desc 'groups:members GROUP_ID', 'List the membors of a group'
+            define_method 'groups:members' do |group|
+              group = find_group_by_alias(group)
+              raise 'Group not found' unless group
+
+              group.memberships.each do |membership|
+                say pretty_print_person(membership.person)
               end
             end
 
-            desc 'groups:create', 'Create a group'
-            define_method 'groups:create' do
-              raise NotImplementedError
+            desc 'groups:provision NAME', 'Create a group'
+            define_method 'groups:provision NAME' do |name|
+              group = default_program.create_group(name: name)
+              say "Successfully created #{pretty_print_group(group)}"
             end
 
-            # TODO: implement Aptible::Comply::Group.add_member
-            desc 'groups:add', 'Add PERSON to GROUP'
-            define_method 'groups:add' do |person_id, group_id|
-              group = fetch_group(default_program, group_id)
-              if group
-                begin
-                  group.add_member(member_id)
-                rescue
-                  msg = "Unable to add person with id #{person_id} " \
-                        "to group with id #{group_id}"
-                  say(msg)
-                end
-              else
-                say('Group not found')
+            desc 'groups:add GROUP_ID PERSON_ID', 'Add person to group'
+            define_method 'groups:add' do |group, person|
+              group = find_group_by_alias(group)
+              raise Thor::Error, 'Group not found' unless group
+
+              person = find_person_by_alias(person)
+              raise Thor::Error, 'Person not found' unless person
+
+              membership = group.memberships.find do |m|
+                m.person.id == person.id
               end
+              raise Thor::Error, 'Membership already exists' if membership
+
+              group.create_membership(person_id: person.id)
             end
 
             # TODO: implement Aptible::Comply::Group.remove_member
-            desc 'groups:remove', 'Remove PERSON from GROUP'
-            define_method 'groups:remove' do |person_id, group_id|
-              group = fetch_group(default_program, group_id)
+            desc 'groups:remove GROUP_ID PERSON_ID', 'Remove person from group'
+            define_method 'groups:remove' do |group, person|
+              group = find_group_by_alias(group)
+              raise Thor::Error, 'Group not found' unless group
+
+              person = find_person_by_alias(person)
+              raise Thor::Error, 'Person not found' unless person
+
+              membership = group.memberships.find do |m|
+                m.person.id == person.id
+              end
+              raise Thor::Error, 'Membership does not exist' unless membership
+
+              membership.destroy
+            end
+
+            desc 'groups:deprovision GROUP_ID', 'Deprovision group'
+            define_method 'groups:deprovision GROUP_ID' do |group|
+              group = find_group_by_alias(group)
               if group
-                begin
-                  group.remove_member(member_id)
-                rescue
-                  msg = "Unable to remove person with id #{person_id} " \
-                        "from group with id #{group_id}"
-                  say(msg)
-                end
+                group.destroy
+                say "Deprovisioned #{pretty_print_group(group)}"
               else
-                say('Group not found')
+                say 'Group not found'
               end
             end
           end

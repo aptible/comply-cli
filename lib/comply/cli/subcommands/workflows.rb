@@ -14,8 +14,11 @@ module Comply
             desc 'workflows:run WORKFLOW_ID [--asset ASSET1_ID ASSET2_ID ...]',
                  'Run a workflow'
             option :asset, type: :array, default: []
-            define_method 'workflows:run' do |workflow_id|
-              run(workflow_id)
+            define_method 'workflows:run WORKFLOW_ID' do |workflow_id|
+              options[:asset].each do |asset_id|
+                asset = asset_by_vendor_id(asset_id)
+                run_workflow(workflow_id, asset)
+              end
             end
           end
         end
