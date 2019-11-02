@@ -36,14 +36,12 @@ module Comply
                 begin
                   group.add_member(member_id)
                 rescue
-                  msg = <<~EOS
-                        Unable to add person with id #{person_id}
-                        to group with id #{group_id}
-                        EOS
+                  msg = "Unable to add person with id #{person_id} " \
+                        "to group with id #{group_id}"
                   say(msg)
                 end
               else
-                say("Group not found")
+                say('Group not found')
               end
             end
 
@@ -55,14 +53,12 @@ module Comply
                 begin
                   group.remove_member(member_id)
                 rescue
-                  msg = <<~EOS
-                        Unable to remove person with id #{person_id}
-                        from group with id #{group_id}
-                        EOS
+                  msg = "Unable to remove person with id #{person_id} " \
+                        "from group with id #{group_id}"
                   say(msg)
                 end
               else
-                say("Group not found")
+                say('Group not found')
               end
             end
           end

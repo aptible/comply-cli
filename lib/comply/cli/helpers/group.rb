@@ -21,7 +21,6 @@ module Comply
         def pretty_print_member(member)
           member.name
         end
-
       end
     end
   end

@@ -41,7 +41,8 @@ module Comply
 
             desc 'person:deprovision PERSON_ID', 'Deprovision a user'
             define_method 'person:deprovision' do |person_id|
-              person = Aptible::Comply::Person.find(person_id, token: fetch_token)
+              person = Aptible::Comply::Person.find(person_id,
+                                                    token: fetch_token)
 
               if person
                 person.destroy

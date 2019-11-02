@@ -12,7 +12,6 @@ module Comply
 
             desc 'access:authorize ASSET_ID', 'Provision a new user'
             define_method 'access:authorize' do
-
             end
 
             desc 'access:grant ASSET_ID PERSON_ID', 'Deprovision a user'
