@@ -18,8 +18,8 @@ module Comply
       include Subcommands::Vendors
       include Subcommands::Integrations
       include Subcommands::People
+      include Subcommands::Groups
       include Subcommands::Access
-      include Subcommands::Group
       include Subcommands::Workflows
 
       # Forward return codes on failures.
