@@ -20,6 +20,7 @@ module Comply
       include Subcommands::People
       include Subcommands::Access
       include Subcommands::Group
+      include Subcommands::Workflows
 
       # Forward return codes on failures.
       def self.exit_on_failure?
