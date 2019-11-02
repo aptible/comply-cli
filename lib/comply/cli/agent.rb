@@ -16,6 +16,7 @@ module Comply
 
       include Subcommands::Vendors
       include Subcommands::Integrations
+      include Subcommands::Groups
 
       # Forward return codes on failures.
       def self.exit_on_failure?
