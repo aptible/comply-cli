@@ -48,7 +48,8 @@ module Comply
         end
 
         def asset_by_vendor_id(vendor_id)
-          matches = Aptible::Comply::Vendor.where(search: vendor_id)
+          matches = Aptible::Comply::Vendor.where(search: vendor_id,
+                                                  token: fetch_token)
           vendor = matches.find do |match|
             match.website_url == vendor_id
           end

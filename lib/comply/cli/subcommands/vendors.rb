@@ -18,26 +18,21 @@ module Comply
             define_method 'vendors:register' do
               pattern = ask('Search pattern for Trust Center vendor: ')
 
-              matches = Aptible::Comply::Vendor.where(search: pattern)
+              matches = Aptible::Comply::Vendor.where(search: pattern,
+                                                      token: fetch_token)
               if matches.empty?
                 say 'No matches found'
                 return
               end
 
-              if matches.count == 1
-                vendor = matches.first
-              else
-                choose do |menu|
-                  menu.prompt = 'Choose a vendor:'
-                  matches.each do |match|
-                    menu.choice(pretty_print_vendor(match)) do
-                      vendor = match
-                    end
+              choose do |menu|
+                menu.prompt = 'Choose a vendor:'
+                matches.each do |match|
+                  menu.choice(pretty_print_vendor(match)) do
+                    create_asset_from_vendor(match)
                   end
                 end
               end
-
-              create_asset_from_vendor(vendor)
             end
 
             desc 'vendors:deregister VENDOR_ID', 'Deregister a vendor'
