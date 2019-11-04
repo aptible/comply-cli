@@ -55,7 +55,7 @@ module Comply
           io.string
         end
 
-        def find_or_create_grant(asset, recipient, status = 'authorized')
+        def find_or_create_grant(asset, recipient, scope, status = 'authorized')
           grant = asset.grants.find do |g|
             recipient._type == g.access_recipient._type &&
             recipient.id == g.access_recipient.id
@@ -65,9 +65,9 @@ module Comply
 
           case recipient
           when Aptible::Comply::Person
-            asset.create_grant(status: status, person_id: recipient.id)
+            asset.create_grant(status: status, person_id: recipient.id, scope: scope)
           when Aptible::Comply::Group
-            asset.create_grant(status: status, group_id: recipient.id)
+            asset.create_grant(status: status, group_id: recipient.id, scope: scope)
           end
         end
       end
