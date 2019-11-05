@@ -9,6 +9,7 @@ module Comply
             desc 'groups:list', 'List groups'
             define_method 'groups:list' do
               groups = default_program.groups
+              return unless groups
               groups.each do |group|
                 say(pretty_print_group(group))
               end
