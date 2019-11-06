@@ -65,9 +65,13 @@ module Comply
 
           case recipient
           when Aptible::Comply::Person
-            asset.create_grant(status: status, person_id: recipient.id, scope: scope)
+            asset.create_grant(status: status,
+                               person_id: recipient.id,
+                               scope: scope)
           when Aptible::Comply::Group
-            asset.create_grant(status: status, group_id: recipient.id, scope: scope)
+            asset.create_grant(status: status,
+                               group_id: recipient.id,
+                               scope: scope)
           end
         end
       end

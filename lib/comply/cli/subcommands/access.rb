@@ -29,7 +29,7 @@ module Comply
               asset = asset_by_vendor_id(asset_id)
               raise Thor::Error, 'Asset not found' unless asset
 
-              grant = find_or_create_grant(asset, recipient, options[:scope])
+              find_or_create_grant(asset, recipient, options[:scope])
             end
 
             desc "access:grant ASSET_ID  #{PERSON_GROUP_OR_SCOPE}",
