@@ -15,8 +15,12 @@ module Comply
 
         def pretty_print_workflows
           AVAILABLE_WORKFLOWS.each do |workflow|
-            say workflow
+            pretty_print_workflow(workflow)
           end
+        end
+
+        def pretty_print_workflow(workflow)
+          workflow
         end
 
         def run_workflow(workflow_id, asset)
@@ -72,6 +76,34 @@ module Comply
 
           asset.create_asset_review(review_type: workflow_id,
                                     reviewer_id: reviewer_id)
+        end
+
+        def check_overdue_asset_reviews(assets)
+          AVAILABLE_WORKFLOWS.each do |workflow_id|
+            say "Overdue vendors for #{pretty_print_workflow(workflow_id)}:"
+            assets.each do |asset|
+              latest_review = find_latest_review(asset, workflow_id)
+              if !latest_review || latest_review.completed_at < 30.days.ago
+                say pretty_print_asset(asset)
+              end
+            end
+            say ''
+          end
+        end
+
+        def find_latest_review(asset, workflow_id)
+          asset
+            .asset_reviews
+            .select { |review| review.review_type == workflow_id }
+            .max do |a, b|
+              if a.completed_at.nil?
+                -1
+              elsif b.completed_at.nil?
+                1
+              else
+                a.completed_at <=> b.completed_at
+              end
+            end
         end
       end
     end

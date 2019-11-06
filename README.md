@@ -44,7 +44,7 @@ Commands:
   comply version                                                                                                 # Print Aptible CLI version
   comply workflows:list                                                                                          # List available workflows
   comply workflows:overdue                                                                                       # List overdue workflows
-  comply workflows:run WORKFLOW_ID [--vendor VENDOR1_ID VENDOR2_ID ...]                                          # Run a workflow
+  comply workflows:run WORKFLOW_ID [--vendor VENDOR_ID VENDOR_ID ...]                                            # Run a workflow
 ```
 <!-- END USAGE -->
 
