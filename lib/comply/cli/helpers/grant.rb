@@ -26,11 +26,14 @@ module Comply
             raise Thor::Error, 'Group or person must be specified'
           end
 
-          if options[:person]
-            find_person_by_alias(options[:person])
-          else
-            find_group_by_alias(options[:group])
-          end
+          recipient = if options[:person]
+                        find_person_by_alias(options[:person])
+                      else
+                        find_group_by_alias(options[:group])
+                      end
+          raise Thor::Error, 'Recipient not found' unless recipient
+
+          recipient
         end
 
         def pretty_print_grants(grants)

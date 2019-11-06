@@ -37,7 +37,7 @@ module Comply
 
             desc 'vendors:deregister VENDOR_ID', 'Deregister a vendor'
             define_method 'vendors:deregister' do |vendor_id|
-              asset = asset_by_vendor_id(vendor_id)
+              asset = vendor_asset_by_id(vendor_id)
 
               if asset
                 asset.destroy

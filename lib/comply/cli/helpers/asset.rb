@@ -55,6 +55,15 @@ module Comply
             asset.vendor_id == vendor.id
           end
         end
+
+        def vendor_asset_by_id(asset_id)
+          asset = Aptible::Comply::Asset.find(asset_id, token: fetch_token)
+          unless asset && asset.asset_type == 'VENDOR'
+            raise Thor::Error, 'Asset not found'
+          end
+
+          asset
+        end
       end
     end
   end
