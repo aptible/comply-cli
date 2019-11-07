@@ -4,11 +4,21 @@ Command-line interface for Aptible Comply.
 
 ## Installation
 
-Add the following line to your application's Gemfile.
+_Note: while this gem is in development, it is (a) private, and (b) built against API endpoints that are still in development. As a result, the instructions here are both temporary (subject to change) and more complicated than they will eventually be._
 
-    gem 'aptible-cli'
+1. Clone this repo: `git clone git@github.com:aptible/comply-cli.git`
+2. From the repo directory, install the gem:
 
-And then run `bundle install`.
+        pushd comply-cli/
+        bundle install
+        bundle exec rake install
+        popd
+
+When using the gem, you will need to configure it to point at a version of the Comply CLI that supports the endpoints required by the CLI. At this moment, the "comply-api-cli" app in the "aptible-staging" environment on Deploy is the deployment kept mos up to date. To use this app with comply-cli, set `APTIBLE_AUTH_ROOT_URL` and `APTIBLE_COMPLY_ROOT_URL` each time you open a new shell (terminal) to use the CLI:
+
+```
+export APTIBLE_AUTH_ROOT_URL=https://auth-api-master.aptible-staging.com APTIBLE_COMPLY_ROOT_URL=https://comply-api-cli.aptible-staging.com
+```
 
 
 ## Usage
