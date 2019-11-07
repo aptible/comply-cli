@@ -19,7 +19,7 @@ module Comply
         end
 
         def set_default_program
-          default_program = own_programs.first
+          default_program = accessible_programs.first
           save_program_id(default_program.id) if default_program
         end
 
@@ -62,7 +62,7 @@ module Comply
           File.join ENV['HOME'], '.aptible', 'programs.json'
         end
 
-        def own_programs
+        def accessible_programs
           # If a user is a member of a role in ACCOUNT_MANAGEMENT_ROLE_IDS
           # in Comply, they have read access to ALL programs. As a result,
           # when offering programs for customers to access, we select just

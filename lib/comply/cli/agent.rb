@@ -16,6 +16,10 @@ module Comply
 
       include Subcommands::Vendors
       include Subcommands::Integrations
+      include Subcommands::People
+      include Subcommands::Groups
+      include Subcommands::Access
+      include Subcommands::Workflows
 
       # Forward return codes on failures.
       def self.exit_on_failure?
@@ -86,7 +90,7 @@ module Comply
 
       desc 'programs:select', 'Select a program for CLI context'
       define_method 'programs:select' do
-        candidates = own_programs
+        candidates = accessible_programs
         current_program_id = begin
                                fetch_program_id
                              rescue Thor::Error

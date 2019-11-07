@@ -1,15 +1,9 @@
 require 'aptible/comply'
 
-require_relative 'token'
-require_relative 'program'
-
 module Comply
   module CLI
     module Helpers
       module Asset
-        include Helpers::Token
-        include Helpers::Program
-
         def pretty_print_asset(asset)
           case asset.asset_type
           when 'VENDOR' then
@@ -18,6 +12,8 @@ module Comply
               token: fetch_token
             )
             "#{pretty_print_vendor(vendor)} (#{asset.id})"
+          else
+            "#{asset.name} (#{asset.id})"
           end
         end
 
@@ -35,7 +31,8 @@ module Comply
           default_program.create_asset(
             asset_type: 'VENDOR',
             name: vendor.name,
-            vendor_id: vendor.id
+            vendor_id: vendor.id,
+            owner: current_user_email
           )
         end
 
@@ -46,7 +43,8 @@ module Comply
         end
 
         def asset_by_vendor_id(vendor_id)
-          matches = Aptible::Comply::Vendor.where(search: vendor_id)
+          matches = Aptible::Comply::Vendor.where(search: vendor_id,
+                                                  token: fetch_token)
           vendor = matches.find do |match|
             match.website_url == vendor_id
           end
@@ -56,6 +54,15 @@ module Comply
           default_program.assets.find do |asset|
             asset.vendor_id == vendor.id
           end
+        end
+
+        def vendor_asset_by_id(asset_id)
+          asset = Aptible::Comply::Asset.find(asset_id, token: fetch_token)
+          unless asset && asset.asset_type == 'VENDOR'
+            raise Thor::Error, 'Asset not found'
+          end
+
+          asset
         end
       end
     end
