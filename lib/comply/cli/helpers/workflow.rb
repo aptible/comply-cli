@@ -20,7 +20,7 @@ module Comply
         end
 
         def pretty_print_workflow(workflow)
-          workflow
+          say workflow
         end
 
         def run_workflow(workflow_id, asset)
