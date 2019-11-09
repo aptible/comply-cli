@@ -5,16 +5,7 @@ module Comply
     module Helpers
       module Asset
         def pretty_print_asset(asset)
-          case asset.asset_type
-          when 'VENDOR' then
-            vendor = Aptible::Comply::Vendor.find(
-              asset.vendor_id,
-              token: fetch_token
-            )
-            "#{pretty_print_vendor(vendor)} (#{asset.id})"
-          else
-            "#{asset.name} (#{asset.id})"
-          end
+          "#{asset.name} (#{asset.id})"
         end
 
         def pretty_print_vendor(vendor)
