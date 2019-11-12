@@ -26,6 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'thor', '~> 0.20.0'
   spec.add_dependency 'chronic_duration', '~> 0.10.6'
   spec.add_dependency 'highline', '~> 1.7'
+  spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rspec', '~> 3.2'
   spec.add_development_dependency 'fabrication', '~> 2.15.2'
   spec.add_development_dependency 'climate_control', '= 0.0.3'
