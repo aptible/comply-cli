@@ -20,7 +20,7 @@ module Comply
               say 'Check complete'
             end
 
-            desc 'workflows:run WORKFLOW_ID [--vendor VENDOR_URL VENDOR_URL ...]',
+            desc 'workflows:run WORKFLOW_ID [--vendor VEND_URL VEND_URL ...]',
                  'Run a workflow'
             option :vendor, type: :array, default: []
             define_method 'workflows:run WORKFLOW_ID' do |workflow_id|
