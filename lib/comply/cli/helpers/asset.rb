@@ -42,14 +42,14 @@ module Comply
           end
         end
 
-        def asset_by_vendor_id(vendor_id)
-          matches = Aptible::Comply::Vendor.where(search: vendor_id,
+        def asset_by_vendor_url(vendor_url)
+          matches = Aptible::Comply::Vendor.where(search: vendor_url,
                                                   token: fetch_token)
           vendor = matches.find do |match|
-            match.website_url == vendor_id
+            match.website_url == vendor_url
           end
 
-          return unless vendor
+          raise Thor::Error, 'Asset not found' unless vendor
 
           default_program.assets.find do |asset|
             asset.vendor_id == vendor.id

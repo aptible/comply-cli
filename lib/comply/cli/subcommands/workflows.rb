@@ -20,12 +20,12 @@ module Comply
               say 'Check complete'
             end
 
-            desc 'workflows:run WORKFLOW_ID [--vendor VENDOR_ID VENDOR_ID ...]',
+            desc 'workflows:run WORKFLOW_ID [--vendor VENDOR_URL VENDOR_URL ...]',
                  'Run a workflow'
             option :vendor, type: :array, default: []
             define_method 'workflows:run WORKFLOW_ID' do |workflow_id|
-              options[:vendor].each do |asset_id|
-                asset = vendor_asset_by_id(asset_id)
+              options[:vendor].each do |vendor_url|
+                asset = asset_by_vendor_url(vendor_url)
                 run_workflow(workflow_id, asset)
               end
             end

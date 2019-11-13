@@ -15,7 +15,7 @@ module Comply
 
         def pretty_print_workflows
           AVAILABLE_WORKFLOWS.each do |workflow|
-            pretty_print_workflow(workflow)
+            say pretty_print_workflow(workflow)
           end
         end
 
