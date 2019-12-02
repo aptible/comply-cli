@@ -28,6 +28,16 @@ module Comply
               prompt_and_create_integration(integration_type)
             end
 
+            desc 'integrations:update INTEGRATION_ID', 'Enable an integration'
+            define_method 'integrations:update' do |integration_type|
+              integration = default_program.integrations.find do |i|
+                i.integration_type == integration_type
+              end
+              raise Thor::Error, 'Integration not found' unless integration
+
+              prompt_and_update_integration(integration)
+            end
+
             desc 'integrations:sync INTEGRATION_ID', 'Sync an integration'
             define_method 'integrations:sync' do |integration_type|
               integration = default_program.integrations.find do |i|
@@ -35,7 +45,7 @@ module Comply
               end
               raise Thor::Error, 'Integration not found' unless integration
 
-              integration.links['run'].post
+              integration.links['sync'].post
               say 'Integration synced'
             end
           end
