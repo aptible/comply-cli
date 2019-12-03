@@ -14,12 +14,7 @@ module Comply
       include Helpers::Token
       include Helpers::Program
 
-      include Subcommands::Vendors
       include Subcommands::Integrations
-      include Subcommands::People
-      include Subcommands::Groups
-      include Subcommands::Access
-      include Subcommands::Workflows
 
       # Forward return codes on failures.
       def self.exit_on_failure?
