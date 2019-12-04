@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'aptible-resource', '~> 1.1'
   spec.add_dependency 'aptible-auth', '~> 1.0'
-  spec.add_dependency 'aptible-comply', '>= 0.0.3'
+  spec.add_dependency 'aptible-comply', '>= 0.1.0'
   spec.add_dependency 'thor', '~> 0.20.0'
   spec.add_dependency 'chronic_duration', '~> 0.10.6'
   spec.add_dependency 'highline', '~> 1.7'
