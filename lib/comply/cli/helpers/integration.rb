@@ -35,14 +35,13 @@ module Comply
 
         def env_vars_by_prompt(type)
           case type
-          # TODO: Enable G Suite integration
-          # when 'gsuite'
-          #   {
-          #     'Client ID' => 'GOOGLE_CLIENT_ID',
-          #     'Client Secret' => 'GOOGLE_CLIENT_SECRET',
-          #     'Access Token' => 'GOOGLE_ACCESS_TOKEN',
-          #     'Refresh Token' => 'GOOGLE_REFRESH_TOKEN'
-          #   }
+          when 'gsuite'
+            {
+              'Client ID' => 'GOOGLE_CLIENT_ID',
+              'Client Secret' => 'GOOGLE_CLIENT_SECRET',
+              'Access Token' => 'GOOGLE_ACCESS_TOKEN',
+              'Refresh Token' => 'GOOGLE_REFRESH_TOKEN'
+            }
           when 'okta'
             {
               'Org Name' => 'OKTA_ORG_NAME',
